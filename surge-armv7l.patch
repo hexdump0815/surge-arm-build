@@ -1,215 +1,3 @@
---- surge-lv2.make.org	2020-04-01 14:30:10.304781131 +0200
-+++ surge-lv2.make	2020-04-01 14:31:20.584925263 +0200
-@@ -20,7 +20,7 @@
- 
- RESCOMP = windres
- INCLUDES += -Isrc/linux -Ilibs/xml -Ilibs/strnatcmp -Ilibs/nanosvg/src -Isrc/common/vt_dsp -Isrc/common/thread -Ivstgui.surge -Ilibs -Isrc/common -Isrc/common/dsp -Isrc/common/gui -Isrc/lv2 -Ilibs/lv2 -Ivst3sdk
--FORCE_INCLUDE +=
-+FORCE_INCLUDE += -Isimde/simde
- ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
- ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
- LIBS += -lpthread -lstdc++fs -lgcc_s -lgcc -ldl
-@@ -38,9 +38,9 @@
- TARGET = $(TARGETDIR)/Surge-Debug.so
- OBJDIR = obj/x64/Debug/surge-lv2
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=1 -DRELEASE=0 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_LV2=1
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
--ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=Surge-Debug.so `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -shared -Wl,-soname=Surge-Debug.so `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined
- define POSTBUILDCMDS
- 	@echo Running postbuild commands
- 	python scripts/linux/generate-lv2-ttl.py target/lv2/Debug/Surge.lv2/Surge-Debug.so
-@@ -51,8 +51,8 @@
- TARGET = $(TARGETDIR)/Surge-Debug.so
- OBJDIR = obj/x86/Debug/surge-lv2
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=1 -DRELEASE=0 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_LV2=1
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
- ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -shared -Wl,-soname=Surge-Debug.so `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined
- define POSTBUILDCMDS
- 	@echo Running postbuild commands
-@@ -64,9 +64,9 @@
- TARGET = $(TARGETDIR)/Surge.so
- OBJDIR = obj/x64/Release/surge-lv2
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=0 -DRELEASE=1 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_LV2=1
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
--ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=Surge.so -s `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined -fdata-sections -ffunction-sections -Wl,-O1 -Wl,--as-needed -Wl,--gc-sections -Wl,--strip-all
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -shared -Wl,-soname=Surge.so -s `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined -fdata-sections -ffunction-sections -Wl,-O1 -Wl,--as-needed -Wl,--gc-sections -Wl,--strip-all
- define POSTBUILDCMDS
- 	@echo Running postbuild commands
- 	python scripts/linux/generate-lv2-ttl.py target/lv2/Release/Surge.lv2/Surge.so
-@@ -77,8 +77,8 @@
- TARGET = $(TARGETDIR)/Surge.so
- OBJDIR = obj/x86/Release/surge-lv2
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=0 -DRELEASE=1 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_LV2=1
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
- ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -shared -Wl,-soname=Surge.so -s `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined -fdata-sections -ffunction-sections -Wl,-O1 -Wl,--as-needed -Wl,--gc-sections -Wl,--strip-all
- define POSTBUILDCMDS
- 	@echo Running postbuild commands
-@@ -539,4 +539,4 @@
- -include $(OBJECTS:%.o=%.d)
- ifneq (,$(PCH))
-   -include $(PCH_PLACEHOLDER).d
--endif
-\ No newline at end of file
-+endif
---- surge-vst2.make.org	2020-04-01 14:30:10.304781131 +0200
-+++ surge-vst2.make	2020-04-01 14:31:20.584925263 +0200
-@@ -20,7 +20,7 @@
- 
- RESCOMP = windres
- INCLUDES += -Isrc/linux -Ilibs/xml -Ilibs/strnatcmp -Ilibs/nanosvg/src -Isrc/common/vt_dsp -Isrc/common/thread -Ivstgui.surge -Ivst3sdk -Ilibs -Isrc/common -Isrc/common/dsp -Isrc/common/gui -Isrc/vst2 -I/compile/source/vcvrack-dockerbuild-v0/vst2-sdk -isystem /compile/source/vcvrack-dockerbuild-v0/vst2-sdk
--FORCE_INCLUDE +=
-+FORCE_INCLUDE += -Isimde/simde
- ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
- ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
- LIBS += -lpthread -lstdc++fs -lgcc_s -lgcc -ldl
-@@ -40,17 +40,17 @@
- TARGET = $(TARGETDIR)/Surge-Debug.so
- OBJDIR = obj/x64/Debug/surge-vst2
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=1 -DRELEASE=0 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_VST2=1 -D__cdecl=
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
--ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=Surge-Debug.so `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -shared -Wl,-soname=Surge-Debug.so `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined
- 
- else ifeq ($(config),debug_x86)
- TARGETDIR = target/vst2/Debug
- TARGET = $(TARGETDIR)/Surge-Debug.so
- OBJDIR = obj/x86/Debug/surge-vst2
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=1 -DRELEASE=0 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_VST2=1 -D__cdecl=
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
- ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -shared -Wl,-soname=Surge-Debug.so `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined
- 
- else ifeq ($(config),release_x64)
-@@ -58,17 +58,17 @@
- TARGET = $(TARGETDIR)/Surge.so
- OBJDIR = obj/x64/Release/surge-vst2
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=0 -DRELEASE=1 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_VST2=1 -D__cdecl=
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
--ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=Surge.so -s `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined -fdata-sections -ffunction-sections -Wl,-O1 -Wl,--as-needed -Wl,--gc-sections -Wl,--strip-all
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -shared -Wl,-soname=Surge.so -s `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined -fdata-sections -ffunction-sections -Wl,-O1 -Wl,--as-needed -Wl,--gc-sections -Wl,--strip-all
- 
- else ifeq ($(config),release_x86)
- TARGETDIR = target/vst2/Release
- TARGET = $(TARGETDIR)/Surge.so
- OBJDIR = obj/x86/Release/surge-vst2
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=0 -DRELEASE=1 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_VST2=1 -D__cdecl=
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
- ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -shared -Wl,-soname=Surge.so -s `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined -fdata-sections -ffunction-sections -Wl,-O1 -Wl,--as-needed -Wl,--gc-sections -Wl,--strip-all
- 
- else
-@@ -521,4 +521,4 @@
- -include $(OBJECTS:%.o=%.d)
- ifneq (,$(PCH))
-   -include $(PCH_PLACEHOLDER).d
--endif
-\ No newline at end of file
-+endif
---- surge-vst3.make.org	2020-04-01 14:30:10.314781151 +0200
-+++ surge-vst3.make	2020-04-01 14:31:20.584925263 +0200
-@@ -20,7 +20,7 @@
- 
- RESCOMP = windres
- INCLUDES += -Isrc/linux -Ilibs/xml -Ilibs/strnatcmp -Ilibs/nanosvg/src -Isrc/common/vt_dsp -Isrc/common/thread -Ivstgui.surge -Ilibs -Isrc/common -Isrc/common/dsp -Isrc/common/gui -Isrc/vst3 -Ivst3sdk
--FORCE_INCLUDE +=
-+FORCE_INCLUDE += -Isimde/simde
- ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
- ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
- LIBS += -lpthread -lstdc++fs -lgcc_s -lgcc -ldl
-@@ -42,17 +42,17 @@
- TARGET = $(TARGETDIR)/Surge-Debug.so
- OBJDIR = obj/x64/Debug/surge-vst3
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=1 -DRELEASE=0 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_VST3=1
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
--ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=Surge-Debug.so `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -shared -Wl,-soname=Surge-Debug.so `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined
- 
- else ifeq ($(config),debug_x86)
- TARGETDIR = target/vst3/Debug
- TARGET = $(TARGETDIR)/Surge-Debug.so
- OBJDIR = obj/x86/Debug/surge-vst3
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=1 -DRELEASE=0 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_VST3=1
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -fPIC -g -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14
- ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -shared -Wl,-soname=Surge-Debug.so `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined
- 
- else ifeq ($(config),release_x64)
-@@ -60,17 +60,17 @@
- TARGET = $(TARGETDIR)/Surge.so
- OBJDIR = obj/x64/Release/surge-vst3
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=0 -DRELEASE=1 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_VST3=1
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
--ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -shared -Wl,-soname=Surge.so -s `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined -fdata-sections -ffunction-sections -Wl,-O1 -Wl,--as-needed -Wl,--gc-sections -Wl,--strip-all
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -shared -Wl,-soname=Surge.so -s `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined -fdata-sections -ffunction-sections -Wl,-O1 -Wl,--as-needed -Wl,--gc-sections -Wl,--strip-all
- 
- else ifeq ($(config),release_x86)
- TARGETDIR = target/vst3/Release
- TARGET = $(TARGETDIR)/Surge.so
- OBJDIR = obj/x86/Release/surge-vst3
- DEFINES += -DVSTGUI_ENABLE_DEPRECATED_METHODS=0 -DSURGE_VERSION=DEVELOPMENT -DDEBUG=0 -DRELEASE=1 -DLINUX=1 -D_aligned_malloc\(x,a\)=malloc\(x\) -D_aligned_free\(x\)=free\(x\) -DTARGET_VST3=1
--ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
--ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -msse2 -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
-+ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -ffast-math -O3 -fPIC -march=armv7 -mfpu=neon -mno-unaligned-access -std=c++17 -Wno-unused-variable `pkg-config --cflags cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -std=c++14 -fvisibility=hidden -fvisibility-inlines-hidden -fdata-sections -ffunction-sections
- ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib32 -m32 -shared -Wl,-soname=Surge.so -s `pkg-config --libs cairo fontconfig freetype2 xkbcommon-x11 xcb-cursor xcb-keysyms xcb-xkb xcb-util x11` -Wl,--no-undefined -fdata-sections -ffunction-sections -Wl,-O1 -Wl,--as-needed -Wl,--gc-sections -Wl,--strip-all
- 
- else
-@@ -619,4 +619,4 @@
- -include $(OBJECTS:%.o=%.d)
- ifneq (,$(PCH))
-   -include $(PCH_PLACEHOLDER).d
--endif
-\ No newline at end of file
-+endif
---- build/CMakeFiles/surge-headless.dir/flags.make.org	2020-04-01 15:15:57.036767444 +0200
-+++ build/CMakeFiles/surge-headless.dir/flags.make	2020-04-01 15:17:10.168667343 +0200
-@@ -3,13 +3,13 @@
- 
- # compile ASM with /usr/bin/c++
- # compile CXX with /usr/bin/c++
--ASM_FLAGS =   -msse2 "-D_aligned_malloc(x,a)=malloc(x)" "-D_aligned_free(x)=free(x)"
-+ASM_FLAGS =   -march=armv7 -mfpu=neon -mno-unaligned-access "-D_aligned_malloc(x,a)=malloc(x)" "-D_aligned_free(x)=free(x)"
- 
- ASM_DEFINES = -DLIBMIDIFILE=1 -DLIBSNDFILE=1 -DLINUX=1 -DTARGET_HEADLESS=1
- 
- ASM_INCLUDES = -I/compile/source/surge/libs -I/compile/source/surge/libs/filesystem -I/compile/source/surge/libs/xml -I/compile/source/surge/libs/catch2 -I/compile/source/surge/libs/strnatcmp -I/compile/source/surge/src/common -I/compile/source/surge/src/common/dsp -I/compile/source/surge/src/common/thread -I/compile/source/surge/src/common/vt_dsp -I/compile/source/surge/libs/midifile/include -I/compile/source/surge/src/headless -I/compile/source/surge/surge-headless -I/usr/include -I/compile/source/surge/src/linux 
- 
--CXX_FLAGS =   -msse2 "-D_aligned_malloc(x,a)=malloc(x)" "-D_aligned_free(x)=free(x)" -std=gnu++1z
-+CXX_FLAGS =   -march=armv7 -mfpu=neon -mno-unaligned-access "-D_aligned_malloc(x,a)=malloc(x)" "-D_aligned_free(x)=free(x)" -std=gnu++1z
- 
- CXX_DEFINES = -DLIBMIDIFILE=1 -DLIBSNDFILE=1 -DLINUX=1 -DTARGET_HEADLESS=1
- 
 --- CMakeLists.txt.org
 +++ CMakeLists.txt
 @@ -66,6 +66,7 @@ set(SURGE_COMMON_INCLUDES
@@ -225,12 +13,12 @@
      target_compile_options(surge-headless
          PRIVATE
 -            -msse2
-+            -march=armv7 -mfpu=neon -mno-unaligned-access
++            -mfpu=vfpv3-d16 -mno-unaligned-access
              "-D_aligned_malloc(x,a)=malloc(x)"
              "-D_aligned_free(x)=free(x)"
      )
---- src/common/SurgeStorage.cpp.org	2020-04-01 15:40:22.761885011 +0200
-+++ src/common/SurgeStorage.cpp	2020-04-01 15:41:55.767158431 +0200
+--- src/common/SurgeStorage.cpp.org
++++ src/common/SurgeStorage.cpp
 @@ -187,11 +187,11 @@
         
         /*
@@ -254,8 +42,8 @@
  #endif
            << " Please install shared assets correctly and restart.";
        Surge::UserInteractions::promptError(oss.str(), "Unable to load windows.wt");
---- build-linux.sh.org	2020-04-01 15:40:17.053807364 +0200
-+++ build-linux.sh	2020-04-01 15:56:41.286993146 +0200
+--- build-linux.sh.org
++++ build-linux.sh
 @@ -239,8 +239,8 @@
      fi
  
@@ -284,8 +72,8 @@
  fi
  
  case $1 in
---- scripts/linux/package-vst3.sh.org	2020-04-01 15:58:22.004804825 +0200
-+++ scripts/linux/package-vst3.sh	2020-04-01 15:59:11.037670424 +0200
+--- scripts/linux/package-vst3.sh.org
++++ scripts/linux/package-vst3.sh
 @@ -2,7 +2,7 @@
  
  OUTPUT_DIR=products
@@ -341,10 +129,8 @@
  
  void FpuState::restore()
  {
-diff --git a/src/linux/ConfigurationXml.S b/src/linux/ConfigurationXml.S
-index 9227ffe..2ed53b1 100644
---- a/src/linux/ConfigurationXml.S
-+++ b/src/linux/ConfigurationXml.S
+--- src/linux/ConfigurationXml.S.org
++++ src/linux/ConfigurationXml.S
 @@ -5,6 +5,6 @@ configurationXmlStart:
      .incbin "../../resources/data/configuration.xml"
  configurationXmlEnd:

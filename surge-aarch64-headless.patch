@@ -1,0 +1,17 @@
+--- build/CMakeFiles/surge-headless.dir/flags.make.org
++++ build/CMakeFiles/surge-headless.dir/flags.make
+@@ -3,13 +3,13 @@
+ 
+ # compile ASM with /usr/bin/c++
+ # compile CXX with /usr/bin/c++
+-ASM_FLAGS =   -msse2 "-D_aligned_malloc(x,a)=malloc(x)" "-D_aligned_free(x)=free(x)"
++ASM_FLAGS =   -march=native -mcpu=native "-D_aligned_malloc(x,a)=malloc(x)" "-D_aligned_free(x)=free(x)"
+ 
+ ASM_DEFINES = -DLIBMIDIFILE=1 -DLIBSNDFILE=1 -DLINUX=1 -DTARGET_HEADLESS=1
+ 
+ ASM_INCLUDES = -I/compile/source/surge/libs -I/compile/source/surge/libs/filesystem -I/compile/source/surge/libs/xml -I/compile/source/surge/libs/catch2 -I/compile/source/surge/libs/strnatcmp -I/compile/source/surge/src/common -I/compile/source/surge/src/common/dsp -I/compile/source/surge/src/common/thread -I/compile/source/surge/src/common/vt_dsp -I/compile/source/surge/libs/midifile/include -I/compile/source/surge/src/headless -I/compile/source/surge/surge-headless -I/usr/include -I/compile/source/surge/src/linux 
+ 
+-CXX_FLAGS =   -msse2 "-D_aligned_malloc(x,a)=malloc(x)" "-D_aligned_free(x)=free(x)" -std=gnu++1z
++CXX_FLAGS =   -march=native -mcpu=native "-D_aligned_malloc(x,a)=malloc(x)" "-D_aligned_free(x)=free(x)" -std=gnu++1z
+ 
+ CXX_DEFINES = -DLIBMIDIFILE=1 -DLIBSNDFILE=1 -DLINUX=1 -DTARGET_HEADLESS=1
