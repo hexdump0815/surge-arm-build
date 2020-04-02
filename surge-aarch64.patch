@@ -97,7 +97,7 @@
      cp target/vst3/Release/Surge.so "$VST_SO_DIR"
 --- src/common/util/FpuState.cpp.org
 +++ src/common/util/FpuState.cpp
-@@ -9,21 +9,21 @@ void FpuState::set()
+@@ -9,19 +9,19 @@ void FpuState::set()
  {
     bool fpuExceptions = false;
  
