@@ -97,7 +97,14 @@
      cp target/vst3/Release/Surge.so "$VST_SO_DIR"
 --- src/common/util/FpuState.cpp.org
 +++ src/common/util/FpuState.cpp
-@@ -9,19 +9,19 @@ void FpuState::set()
+@@ -1,5 +1,5 @@
+ #include "FpuState.h"
+-#include <emmintrin.h>
++#include <x86/sse2.h>
+ #include <float.h>
+ 
+ FpuState::FpuState() : _old_SSE_state(0), _SSE_Flags(0x8040)
+@@ -9,21 +9,21 @@ void FpuState::set()
  {
     bool fpuExceptions = false;
  
@@ -129,3 +136,56 @@
  
  void FpuState::restore()
  {
+-   _mm_setcsr(_old_SSE_state);
+-}
+\ No newline at end of file
++   simde_mm_setcsr(_old_SSE_state);
++}
+diff --git a/src/common/util/FpuState.cpp b/src/common/util/FpuState.cpp
+index d6da563..913e8b4 100644
+--- a/src/common/util/FpuState.cpp
++++ b/src/common/util/FpuState.cpp
+@@ -1,5 +1,5 @@
+ #include "FpuState.h"
+-#include <emmintrin.h>
++#include <x86/sse2.h>
+ #include <float.h>
+ 
+ FpuState::FpuState() : _old_SSE_state(0), _SSE_Flags(0x8040)
+@@ -9,21 +9,21 @@ void FpuState::set()
+ {
+    bool fpuExceptions = false;
+ 
+-   _old_SSE_state = _mm_getcsr();
+-   if (fpuExceptions)
+-   {
+-      _mm_setcsr(((_old_SSE_state & ~_MM_MASK_MASK) | _SSE_Flags) | _MM_EXCEPT_MASK); // all on
+-   }
+-   else
+-   {
+-      _mm_setcsr((_old_SSE_state | _SSE_Flags) | _MM_MASK_MASK);
+-   }
+-   // FTZ/DAZ + ignore all exceptions (1 means ignored)
+-
+-   _MM_SET_ROUNDING_MODE(_MM_ROUND_NEAREST);
++//   _old_SSE_state = simde_mm_getcsr();
++//   if (fpuExceptions)
++//   {
++//      simde_mm_setcsr(((_old_SSE_state & ~_MM_MASK_MASK) | _SSE_Flags) | _MM_EXCEPT_MASK); // all on
++//   }
++//   else
++//   {
++//      simde_mm_setcsr((_old_SSE_state | _SSE_Flags) | _MM_MASK_MASK);
++//   }
++//   // FTZ/DAZ + ignore all exceptions (1 means ignored)
++//
++//   _MM_SET_ROUNDING_MODE(_MM_ROUND_NEAREST);
+ }
+ 
+ void FpuState::restore()
+ {
+-   _mm_setcsr(_old_SSE_state);
+-}
+\ No newline at end of file
++   simde_mm_setcsr(_old_SSE_state);
++}
