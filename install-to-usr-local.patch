@@ -1,0 +1,62 @@
+diff --git a/build-linux.sh b/build-linux.sh
+index e545441b..e86741de 100755
+--- a/build-linux.sh
++++ b/build-linux.sh
+@@ -28,7 +28,7 @@ Options:
+                             vst2, vst3, lv2 or headless.
+     -d, --debug             Use a debug version.
+     -l, --local             Install/uninstall built assets under /home instead
+-                            of /usr
++                            of /usr/local
+ EOHELP
+ }
+ 
+@@ -251,11 +251,11 @@ if [[ ! -z "$option_local" ]]; then
+     headless_dest_path="$HOME/bin"
+     data_path="$HOME/.local/share/surge"
+ else
+-    vst2_dest_path="/usr/lib/vst"
+-    vst3_dest_path="/usr/lib/vst3"
+-    lv2_dest_path="/usr/lib/lv2"
+-    headless_dest_path="/usr/bin"
+-    data_path="/usr/share/surge"
++    vst2_dest_path="/usr/local/lib/vst"
++    vst3_dest_path="/usr/local/lib/vst3"
++    lv2_dest_path="/usr/local/lib/lv2"
++    headless_dest_path="/usr/local/bin"
++    data_path="/usr/local/share/surge"
+ fi
+ 
+ case $1 in
+diff --git a/src/common/SurgeStorage.cpp b/src/common/SurgeStorage.cpp
+index 4bcee9ce..97d751f0 100644
+--- a/src/common/SurgeStorage.cpp
++++ b/src/common/SurgeStorage.cpp
+@@ -216,15 +216,15 @@ SurgeStorage::SurgeStorage(std::string suppliedDataPath) : otherscene_clients(0)
+        
+        /*
+        ** If local directory doesn't exists - we probably came here through an installer -
+-       ** check for /usr/share/surge and use /usr/share/Surge as our last guess
++       ** check for /usr/local/share/surge and use /usr/local/share/Surge as our last guess
+        */
+        if (! fs::is_directory(datapath))
+        {
+-          std::string systemDataPath = "/usr/share/surge/";
++          std::string systemDataPath = "/usr/local/share/surge/";
+           if ( fs::is_directory(systemDataPath) )
+              datapath = systemDataPath;
+           else
+-             datapath = "/usr/share/Surge/";
++             datapath = "/usr/local/share/Surge/";
+        }
+    }
+    else
+@@ -435,7 +435,7 @@ bailOnPortable:
+           << "your %LocalAppData% directory."
+ #endif
+ #if LINUX
+-          << "/usr/share or ~/.local/share."
++          << "/usr/local/share or ~/.local/share."
+ #endif
+           << " Please install shared assets correctly and restart.";
+       Surge::UserInteractions::promptError(oss.str(), "Unable to load windows.wt");

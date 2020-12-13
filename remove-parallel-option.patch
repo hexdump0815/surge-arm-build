@@ -1,0 +1,13 @@
+diff --git a/build-linux.sh b/build-linux.sh
+index e545441b..a4174f03 100755
+--- a/build-linux.sh
++++ b/build-linux.sh
+@@ -74,7 +74,7 @@ run_clean()
+ run_build()
+ {
+     local flavor=$1
+-    cmake --build ${DEF_BUILD_DIR} --config Release --target $flavor --parallel 2
++    cmake --build ${DEF_BUILD_DIR} --config Release --target $flavor
+ 
+     build_suc=$?
+     if [[ $build_suc = 0 ]]; then
