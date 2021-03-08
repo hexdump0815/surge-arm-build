@@ -1,5 +1,9 @@
 apt-get install build-essential libcairo-dev libxkbcommon-x11-dev libxkbcommon-dev libxcb-cursor-dev libxcb-keysyms1-dev libxcb-util-dev
 
+git clone https://github.com/surge-synthesizer/surge-extra-content.git
+cd surge-extra-content
+git checkout 4ce4f7fb2d77dafe40f6d2d1309476ada908150b
+cd ..
 git clone https://github.com/surge-synthesizer/surge.git
 cd surge
 git checkout release_1.8.1
@@ -24,6 +28,7 @@ rm -rf /usr/local/share/surge /usr/local/lib/vst3/Surge.vst3 /usr/local/lib/lv2/
 ./build-linux.sh --project=vst3 install
 ./build-linux.sh --project=lv2 install
 ./build-linux.sh --project=headless install
+cp -r /compile/source/surge-extra-content/Skins/royal-surge.surge-skin /usr/local/share/surge/skins
 # armv7l
 tar czf /tmp/surge-1.8.1.armv7l.tar.gz /usr/local/share/surge /usr/local/lib/vst3/Surge.vst3 /usr/local/lib/lv2/Surge.lv2 /usr/local/bin/Surge-Headless
 tar czf /tmp/surge-vst-1.8.1.armv7l.tar.gz /usr/local/lib/vst/Surge.so
