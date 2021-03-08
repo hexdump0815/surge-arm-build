@@ -44,3 +44,33 @@ index 05b75b99..b3dc071f 100644
  #endif
            << " Please reinstall Surge and try again!";
        Surge::UserInteractions::promptError(oss.str(), "Surge Resources Loading Error");
+diff --git a/build-linux.sh b/build-linux.sh
+index 7100d53e..ec0b13f9 100755
+--- a/build-linux.sh
++++ b/build-linux.sh
+@@ -28,7 +28,7 @@ Options:
+                             vst2, vst3, lv2 or headless.
+     -d, --debug             Use a debug version.
+     -l, --local             Install/uninstall built assets under /home instead
+-                            of /usr
++                            of /usr/local
+ EOHELP
+ }
+ 
+@@ -266,11 +266,11 @@ if [[ ! -z "$option_local" ]]; then
+     headless_dest_path="$HOME/bin"
+     data_path="$HOME/.local/share/surge"
+ else
+-    vst2_dest_path="/usr/lib/vst"
+-    vst3_dest_path="/usr/lib/vst3"
+-    lv2_dest_path="/usr/lib/lv2"
+-    headless_dest_path="/usr/bin"
+-    data_path="/usr/share/surge"
++    vst2_dest_path="/usr/local/lib/vst"
++    vst3_dest_path="/usr/local/lib/vst3"
++    lv2_dest_path="/usr/local/lib/lv2"
++    headless_dest_path="/usr/local/bin"
++    data_path="/usr/local/share/surge"
+ fi
+ 
+ case $1 in
