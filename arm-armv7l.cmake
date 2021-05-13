@@ -4,6 +4,7 @@ set(FLAGS
   -mfpu=vfpv3-d16
   -mno-unaligned-access
   -Wno-psabi
+  -Wno-error
   -flax-vector-conversions #FIXME - remove this
   )
 string(REPLACE ";" " " FLAGS "${FLAGS}")

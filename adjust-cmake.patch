@@ -1,7 +1,8 @@
 adjust cmake settings to be happy with the cmake 3.10 of ubuntu 18.04 - seems to work
+and disable -Werror as it gives problems on armv7l - at least on ubuntu 18.04 with its gcc 7.5
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 374991f1..566028db 100644
+index 4ad951dd..110be29b 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -5,8 +5,8 @@
@@ -15,3 +16,12 @@ index 374991f1..566028db 100644
  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
  set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9 CACHE STRING "Build for 10.9")
  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+@@ -34,7 +34,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+   add_compile_options(
+     -Wno-multichar
+     # Targetting Windows with GCC/Clang is experimental
+-    $<$<NOT:$<BOOL:${WIN32}>>:-Werror>
++#    $<$<NOT:$<BOOL:${WIN32}>>:-Werror>
+ 
+     # PE/COFF doesn't support visibility
+     $<$<NOT:$<BOOL:${WIN32}>>:-fvisibility=hidden>

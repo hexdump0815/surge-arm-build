@@ -1,49 +1,51 @@
 diff --git a/src/common/SurgeStorage.cpp b/src/common/SurgeStorage.cpp
-index 05b75b99..b3dc071f 100644
+index 164189ce..6fbdb5d9 100644
 --- a/src/common/SurgeStorage.cpp
 +++ b/src/common/SurgeStorage.cpp
-@@ -243,25 +243,25 @@ SurgeStorage::SurgeStorage(std::string suppliedDataPath) : otherscene_clients(0)
-        
-        /*
-        ** If local directory doesn't exists - we probably came here through an installer -
--       ** check for /usr/share/surge and use /usr/share/Surge as our last guess
-+       ** check for /usr/local/share/surge and use /usr/local/share/Surge as our last guess
-        */
-        if (!fs::is_directory(string_to_path(datapath)))
-        {
--          if (fs::is_directory(string_to_path(std::string(Surge::Build::CMAKE_INSTALL_PREFIX) + "/share/surge")))
-+          if (fs::is_directory(string_to_path(std::string(Surge::Build::CMAKE_INSTALL_PREFIX) + "/local/share/surge")))
-           {
--             datapath = std::string() + Surge::Build::CMAKE_INSTALL_PREFIX + "/share/surge";
-+             datapath = std::string() + Surge::Build::CMAKE_INSTALL_PREFIX + "/local/share/surge";
-           }
--          else if (fs::is_directory(string_to_path(std::string(Surge::Build::CMAKE_INSTALL_PREFIX) + "/share/Surge")))
-+          else if (fs::is_directory(string_to_path(std::string(Surge::Build::CMAKE_INSTALL_PREFIX) + "/local/share/Surge")))
-           {
--             datapath = std::string() + Surge::Build::CMAKE_INSTALL_PREFIX + "/share/Surge";
-+             datapath = std::string() + Surge::Build::CMAKE_INSTALL_PREFIX + "/local/share/Surge";
-           }
-           else
-           {
--             std::string systemDataPath = "/usr/share/surge/";
-+             std::string systemDataPath = "/usr/local/share/surge/";
-              if (fs::is_directory(string_to_path(systemDataPath)))
-                 datapath = systemDataPath;
-              else
--                datapath = "/usr/share/Surge/";
-+                datapath = "/usr/local/share/Surge/";
-           }
-        }
-    }
-@@ -450,7 +450,7 @@ bailOnPortable:
-           << "%ProgramData%\\Surge directory."
+@@ -272,27 +272,27 @@ SurgeStorage::SurgeStorage(std::string suppliedDataPath) : otherscene_clients(0)
+ 
+         /*
+         ** If local directory doesn't exists - we probably came here through an installer -
+-        ** check for /usr/share/surge and use /usr/share/Surge as our last guess
++        ** check for /usr/local/share/surge and use /usr/local/share/Surge as our last guess
+         */
+         if (!fs::is_directory(string_to_path(datapath)))
+         {
+             if (fs::is_directory(string_to_path(std::string(Surge::Build::CMAKE_INSTALL_PREFIX) +
+-                                                "/share/surge")))
++                                                "/local/share/surge")))
+             {
+-                datapath = std::string() + Surge::Build::CMAKE_INSTALL_PREFIX + "/share/surge";
++                datapath = std::string() + Surge::Build::CMAKE_INSTALL_PREFIX + "/local/share/surge";
+             }
+             else if (fs::is_directory(string_to_path(
+-                         std::string(Surge::Build::CMAKE_INSTALL_PREFIX) + "/share/Surge")))
++                         std::string(Surge::Build::CMAKE_INSTALL_PREFIX) + "/local/share/Surge")))
+             {
+-                datapath = std::string() + Surge::Build::CMAKE_INSTALL_PREFIX + "/share/Surge";
++                datapath = std::string() + Surge::Build::CMAKE_INSTALL_PREFIX + "/local/share/Surge";
+             }
+             else
+             {
+-                std::string systemDataPath = "/usr/share/surge/";
++                std::string systemDataPath = "/usr/local/share/surge/";
+                 if (fs::is_directory(string_to_path(systemDataPath)))
+                     datapath = systemDataPath;
+                 else
+-                    datapath = "/usr/share/Surge/";
++                    datapath = "/usr/local/share/Surge/";
+             }
+         }
+     }
+@@ -478,7 +478,7 @@ bailOnPortable:
+             << "%ProgramData%\\Surge directory."
  #endif
  #if LINUX
--          << "/usr/share/Surge or ~/.local/share/Surge."
-+          << "/usr/local/share/Surge or ~/.local/share/Surge."
+-            << "/usr/share/Surge or ~/.local/share/Surge."
++            << "/usr/local/share/Surge or ~/.local/share/Surge."
  #endif
-           << " Please reinstall Surge and try again!";
-       Surge::UserInteractions::promptError(oss.str(), "Surge Resources Loading Error");
+             << " Please reinstall Surge and try again!";
+         Surge::UserInteractions::promptError(oss.str(), "Surge Resources Loading Error");
 diff --git a/build-linux.sh b/build-linux.sh
 index 7100d53e..ec0b13f9 100755
 --- a/build-linux.sh
@@ -74,3 +76,4 @@ index 7100d53e..ec0b13f9 100755
  fi
  
  case $1 in
+
