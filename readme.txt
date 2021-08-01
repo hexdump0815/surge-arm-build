@@ -1,4 +1,5 @@
 apt-get install build-essential libcairo-dev libxkbcommon-x11-dev libxkbcommon-dev libxcb-cursor-dev libxcb-keysyms1-dev libxcb-util-dev
+# on debian bullseye apt-get install python was required too
 
 git clone https://github.com/surge-synthesizer/surge-extra-content.git
 cd surge-extra-content
@@ -26,6 +27,7 @@ export CXXFLAGS="-march=armv8-a -mtune=cortex-a53 -Wno-psabi -flax-vector-conver
 ./build-linux.sh --project=lv2 build
 ./build-linux.sh --project=headless build
 rm -rf /usr/local/share/surge /usr/local/lib/vst3/Surge.vst3 /usr/local/lib/lv2/Surge.lv2 /usr/local/bin/Surge-Headless /usr/local/lib/vst/Surge.so
+mkdir -p /usr/local/lib/vst
 ./build-linux.sh --project=vst2 install
 ./build-linux.sh --project=vst3 install
 ./build-linux.sh --project=lv2 install
@@ -37,6 +39,9 @@ tar czf /tmp/surge-vst-1.9.0.armv7l.tar.gz /usr/local/lib/vst/Surge.so
 # aarch64
 tar czf /tmp/surge-1.9.0.aarch64.tar.gz /usr/local/share/surge /usr/local/lib/vst3/Surge.vst3 /usr/local/lib/lv2/Surge.lv2 /usr/local/bin/Surge-Headless
 tar czf /tmp/surge-vst-1.9.0.aarch64.tar.gz /usr/local/lib/vst/Surge.so
+# i686
+tar czf /tmp/surge-1.9.0.i686.tar.gz /usr/local/share/surge /usr/local/lib/vst3/Surge.vst3 /usr/local/lib/lv2/Surge.lv2 /usr/local/bin/Surge-Headless
+tar czf /tmp/surge-vst-1.9.0.i686.tar.gz /usr/local/lib/vst/Surge.so
 # x86_64
 tar czf /tmp/surge-1.9.0.x86_64.tar.gz /usr/local/share/surge /usr/local/lib/vst3/Surge.vst3 /usr/local/lib/lv2/Surge.lv2 /usr/local/bin/Surge-Headless
 tar czf /tmp/surge-vst-1.9.0.x86_64.tar.gz /usr/local/lib/vst/Surge.so
